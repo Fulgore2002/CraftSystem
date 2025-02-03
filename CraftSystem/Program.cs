@@ -1,14 +1,10 @@
-﻿
-
-
-namespace CraftSystem
+﻿namespace CraftSystem
 {
     internal class Program
     {
-        public void Main(string[] args)
+        static void Main()
         {
             new Engine().Start();
-
         }
     }
 }
