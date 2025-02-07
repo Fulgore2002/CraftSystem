@@ -1,47 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace CraftSystem
 {
     public class Person
     {
-        private string personName;
+        private string personName = "Anonymous Player";
         private double Currency = 10.50;
-        private List<Item> inventory;
 
-        // Constructor
-        public Person(string name)
+        public Person(string name) 
         {
             personName = name;
-            inventory = new List<Item>();
+        }
+        public Person()
+        { 
+        
+
+
         }
 
-        // Method to get player information
         public string Information()
         {
             return $"{personName} has {Currency.ToString("C")}";
         }
 
-        // Method to update player name
-        public void UpdateName(string newName)
+        public string SetName()
         {
-            personName = newName;
+            Print("what would you like your name to be?");
+            Print();
+
+            personName = GetInput();
+
+            return $"Your name has been updated to {personName}";
         }
 
-        // Method to add an item to the inventory
-        public void AddItemToInventory(Item item)
-        {
-            inventory.Add(item);
-        }
-
-        // Method to display inventory items
-        public void DisplayInventory()
-        {
-            Console.WriteLine($"{personName}'s Inventory:");
-            foreach (var item in inventory)
-            {
-                Console.WriteLine($"- {item.Name} ({item.Amount} {item.AmountType}) worth {item.Value:C}");
-            }
-        }
     }
+
+
 }

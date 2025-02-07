@@ -1,10 +1,18 @@
-﻿namespace CraftSystem
+﻿/*
+ * 
+ * 
+ */
+
+
+namespace CraftSystem
 {
     internal class Program
     {
-        static void Main()
+        public void Main()
         {
-            new Engine().Start();
+            Engine e = new Engine();
+            e.Start();
+
         }
     }
 }
