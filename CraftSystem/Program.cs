@@ -8,7 +8,7 @@ namespace CraftSystem
 {
     internal class Program
     {
-        public void Main()
+        static void Main()
         {
             Engine e = new Engine();
             e.Start();

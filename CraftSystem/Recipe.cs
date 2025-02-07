@@ -6,25 +6,35 @@ using System.Threading.Tasks;
 
 namespace CraftSystem
 {
-    public class Recipe
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    namespace CraftingSystemMonday
     {
-        public string Name;
-        public double Amount;
-        public string AmountType;
-        public double Value;
-        public List<Item> Ingredients;
-  
-        public string GetIngredientList()
+        public class Recipe
         {
-            string output = "";
-            foreach (Item item in Ingredients)
+            public string Name;
+            public string Description;
+            public List<Item> Ingredients = new List<Item>();
+
+            public Recipe()
             {
-                output += item.ToString();
+
+            }
+            public Recipe(string name, string description, List<Item> items)
+            {
+                Name = name;
+                Description = description;
+                Ingredients = items;
             }
 
-
-            return output;
-
+            public string Information()
+            {
+                return $"    *{Name} ({Description})";
+            }
         }
     }
 }
