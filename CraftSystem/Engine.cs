@@ -1,235 +1,89 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Threading.Tasks;
-using CraftSystem.CraftingSystemMonday;
 using static System.Console;
-using static CraftSystem.Library;
 
 namespace CraftSystem
 {
     public class Engine
-
     {
+        private Person player;
+        private List<Recipe> recipes = new List<Recipe>();
 
-        //player
-
-        Person Player = new Person();
-        Person Vendor = new Person();
-        public List<Recipe> Recipes = new List<Recipe>();
-
-
-        //name of my system
-
-        private string name = "Awesome Potion Crafting System";
+        public Engine(Person player)
+        {
+            this.player = player;
+        }
 
         public void Start()
-
         {
-
-            Print(name);
-
-            Print(Player.Information());
-
-            Print("Do you want to customize your name? Type y for yes, n for no:");
-
-            string input = Console.ReadLine();
-
-            if (input.ToLower() == "y")
-
-            {
-
-                Print("Please enter your name:");
-
-                Player.Name = Console.ReadLine();
-
-            }
-
-            Recipes.Add(
-
-                new Recipe(
-
-                    "Chamomile Tea",
-
-                    "recipe description",
-
-                    new List<Item>()
-
-                    {
-
-                        new Item(){Name ="Water", Amount = 1, Value = .0015, Description = "water", AmountType = "cup(s)"  },
-
-                        new Item(){Name ="Chamomile", Amount = 1, Value = .0015, Description = "Matricaria recutita, dried", AmountType = "tsp(s)"  },
-
-
-
-
-                    }
-
-                )
-
-                );
-
-            Recipes.Add(new Recipe() { Name = "recipe 2" });
-
-
-
-
-            Run();
-
-
-
-
-        }
-
-        private void Run()
-
-        {
-
-            Pause();
-
-            Print(Player.Information());
-
-            Print(showMenu());
-
-            int number = ConvertStringToInteger(GetInput());
-
-            if (number > 0)
-
-            {
-
-                //show the thing player chose
-
-                switch (number)
-
-                {
-
-                    case 1:
-
-                        Print(Player.ShowInventoryItems());
-
-                        break;
-
-                    case 2:
-
-                        Print(ShowAllRecipes());
-
-                        break;
-
-                    case 3:
-
-                        Print("week 3");
-
-                        break;
-
-                    case 4:
-
-                        Print("week 3");
-
-                        break;
-
-                    case 5:
-
-                        return;
-
-                }
-
-            }
-
-
-
-            Run();
-
-        }
-
-        private string showMenu()
-
-        {
-
-            string output = "Choose an option:";
-
-            output += "\n1. Show inventory";
-
-            output += "\n2. Show recipes";
-
-            output += "\n3. See recipe details";
-
-            output += "\n4. Craft";
-
-            output += "\n5. Exit";
-
-
-
-
-            return output;
-
-        }
-
-        public string ShowAllRecipes()
-
-        {
-
-            string output = "Available Recipes:\n";
-
-            int number = 1;
-
-            foreach (Recipe recipe in Recipes)
-
-            {
-
-                output += $"   {number}. {recipe.Information()}\n";
-
-
-
-                number++;
-
-            }
-
-            return output;
-
-        }
-
-
-
-
-        public void RecipeMenu()
-
-        {
-
+            Console.Title = "Awesome Crafting System";
+            Console.WriteLine("Welcome to the Awesome Crafting System!");
+            player.PrintStatus();  // Print player's name and currency
+            InitializeRecipes();   // Initialize recipes
             ShowAllRecipes();
-
-            Print("Enter the number of the recipe you would like to view:");
-
-            string choice = GetInput();
-
-            int num = ConvertStringToInteger(choice);
-
-            if (num >= 1 && num < Recipes.Count)
-
-            {
-
-                //great - we got a good number
-
-                Print(Recipes[num - 1].Information());
-
-            }
-
-            else
-
-            {
-
-                //print message saying enter right range as number
-
-                //recursive RecipeMenu()
-
-            }
-
+            SelectRecipeDetails();
+            DisplayCredits();  // Display credits at the end
+            Console.ReadKey();
         }
 
+        // Method to initialize recipes
+        private void InitializeRecipes()
+        {
+            Recipe hotChocolate = new Recipe("Hot Chocolate", "12 ounces", 3.50);
+            hotChocolate.AddIngredient("Milk", "4 cups");
+            hotChocolate.AddIngredient("Chocolate Chips", "1/2 cup");
+            recipes.Add(hotChocolate);
 
+            Recipe applePie = new Recipe("Apple Pie", "1 pie", 10.00);
+            applePie.AddIngredient("Apples", "6 cups");
+            applePie.AddIngredient("Sugar", "2 cups");
+            recipes.Add(applePie);
 
+            Recipe bread = new Recipe("Bread", "1 loaf", 5.00);
+            bread.AddIngredient("Flour", "4 cups");
+            bread.AddIngredient("Yeast", "1 tablespoon");
+            recipes.Add(bread);
+        }
 
+        private void ShowAllRecipes()
+        {
+            Console.WriteLine("\nAvailable Recipes:");
+            foreach (var recipe in recipes)
+            {
+                Console.WriteLine($"- {recipe.GetName()}");
+            }
+        }
+
+        private void SelectRecipeDetails()
+        {
+            Console.WriteLine("\nEnter the name of the recipe you want to see details for:");
+            string recipeName = Console.ReadLine();
+            Recipe selectedRecipe = recipes.FirstOrDefault(r => r.GetName().Equals(recipeName, StringComparison.OrdinalIgnoreCase));
+
+            if (selectedRecipe != null)
+            {
+                Console.WriteLine($"\nRecipe: {selectedRecipe.GetName()}");
+                Console.WriteLine($"Amount: {selectedRecipe.GetOutputAmount()}");
+                Console.WriteLine($"Value: {selectedRecipe.GetValue():C}");
+                Console.WriteLine("Ingredients:");
+                foreach (var ingredient in selectedRecipe.GetIngredients())
+                {
+                    Console.WriteLine($"- {ingredient.Key}: {ingredient.Value}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Recipe not found.");
+            }
+        }
+
+        // Method to display credits at the end
+        private void DisplayCredits()
+        {
+            Menu menu = new Menu();
+            menu.DisplayCredits();
+        }
     }
+
 }

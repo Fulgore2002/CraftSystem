@@ -6,35 +6,62 @@ using System.Threading.Tasks;
 
 namespace CraftSystem
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    namespace CraftingSystemMonday
+    public class Recipe
     {
-        public class Recipe
+        public string Name { get; set; }
+        public string OutputAmount { get; set; }
+        public double Value { get; set; }
+        public Dictionary<string, string> Ingredients { get; set; }
+
+        public Recipe(string name, string outputAmount, double value)
         {
-            public string Name;
-            public string Description;
-            public List<Item> Ingredients = new List<Item>();
+            Name = name;
+            OutputAmount = outputAmount;
+            Value = value;
+            Ingredients = new Dictionary<string, string>();
+        }
 
-            public Recipe()
-            {
+        // Method to add an ingredient and its amount
+        public void AddIngredient(string item, string amount)
+        {
+            Ingredients[item] = amount;
+        }
 
-            }
-            public Recipe(string name, string description, List<Item> items)
-            {
-                Name = name;
-                Description = description;
-                Ingredients = items;
-            }
+        // Getter methods
+        public string GetName()
+        {
+            return Name;
+        }
 
-            public string Information()
+        public string GetOutputAmount()
+        {
+            return OutputAmount;
+        }
+
+        public double GetValue()
+        {
+            return Value;
+        }
+
+        public Dictionary<string, string> GetIngredients()
+        {
+            return Ingredients;
+        }
+
+        // Method to get the recipe details
+        public string GetDetails()
+        {
+            var details = new StringBuilder();
+            details.AppendLine($"Recipe: {Name}");
+            details.AppendLine($"Amount: {OutputAmount}");
+            details.AppendLine($"Value: {Value:C}");
+            details.AppendLine("Ingredients:");
+            foreach (var ingredient in Ingredients)
             {
-                return $"    *{Name} ({Description})";
+                details.AppendLine($"- {ingredient.Key}: {ingredient.Value}");
             }
+            return details.ToString();
         }
     }
+
 }

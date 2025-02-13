@@ -1,94 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
 
 namespace CraftSystem
 {
-
     public class Person
     {
-        private string name = "Anonymous Player";
-        public double Currency = 10.5089445;
-        public List<Item> Inventory = new List<Item>();
+        public string Name { get; set; }
+        public double Currency { get; set; }
+        private List<Item> inventory;
 
-        public string Name
+        // Constructor
+        public Person(string name, double currency = 10.50)
         {
-            get => name;
-            set => name = value;
-
-        }
-        public Person()
-        {
-
-            Inventory.Add(new Item()
-            {
-                Name = "Water",
-                Description = "Clean, lovely, water",
-                Amount = 2,
-                Value = .0015,
-                AmountType = "cup(s)"
-            }
-            );
-            Inventory.Add(new Item()
-            {
-                Name = "Chamomile",
-                Description = "Matricaria recutita, dried",
-                Amount = 1,
-                Value = 0.0875,
-                AmountType = "tsp(s)"
-            }
-            );
-            Inventory.Add(new Item()
-            {
-                Name = "Ashwagandha",
-                Description = "Withania somnifera, extract",
-                Amount = 1,
-                Value = 0.7475,
-                AmountType = "tsp(s)"
-            }
-            );
-            Inventory.Add(new Item()
-            {
-                Name = "Lavender",
-                Description = "Lavandula angustifolia, dried",
-                Amount = 1,
-                Value = 032.5,
-                AmountType = "tsp(s)"
-            }
-            );
-            Inventory.Add(new Item()
-            {
-                Name = "Lemon Balm",
-                Description = "Melissa officinalis, dried",
-                Amount = 1,
-                Value = 0.87375,
-                AmountType = "tsp(s)"
-            }
-            );
+            Name = name;
+            Currency = currency;
+            inventory = new List<Item>();
         }
 
-        public string ShowInventoryItems()
-        {
-            string output = "Inventory:\n";
-            foreach (Item item in Inventory)
-            {
-                output += "    *" + item.Name + Environment.NewLine;
-            }
-            return output;
-        }
-
-        public void Craft()
-        {
-
-        }
-
+        // Method to get player information
         public string Information()
         {
-            return $"{name} {Currency.ToString("c")}";
+            return $"{Name} has {Currency:C}";
+        }
+
+        // New method to print player's name and currency
+        public void PrintStatus()
+        {
+            Console.WriteLine(Information());
+        }
+
+        // Method to update player name
+        public void UpdateName(string newName)
+        {
+            Name = newName;
+        }
+
+        // Method to add an item to the inventory
+        public void AddItemToInventory(Item item)
+        {
+            inventory.Add(item);
+        }
+
+        // Method to display inventory items
+        public void DisplayInventory()
+        {
+            Console.WriteLine($"{Name}'s Inventory:");
+            foreach (var item in inventory)
+            {
+                Console.WriteLine($"- {item.Name} ({item.Amount} {item.AmountType}) worth {item.Value:C}");
+            }
         }
     }
 }
-
-
