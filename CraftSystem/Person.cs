@@ -17,31 +17,26 @@ namespace CraftSystem
             inventory = new List<Item>();
         }
 
-        // Method to get player information
         public string Information()
         {
             return $"{Name} has {Currency:C}";
         }
 
-        // New method to print player's name and currency
         public void PrintStatus()
         {
             Console.WriteLine(Information());
         }
 
-        // Method to update player name
         public void UpdateName(string newName)
         {
             Name = newName;
         }
 
-        // Method to add an item to the inventory
         public void AddItemToInventory(Item item)
         {
             inventory.Add(item);
         }
 
-        // Method to display inventory items
         public void DisplayInventory()
         {
             Console.WriteLine($"{Name}'s Inventory:");

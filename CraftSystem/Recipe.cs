@@ -27,7 +27,6 @@ namespace CraftSystem
             Ingredients[item] = amount;
         }
 
-        // Getter methods
         public string GetName()
         {
             return Name;

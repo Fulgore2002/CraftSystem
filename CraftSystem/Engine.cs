@@ -19,11 +19,11 @@ namespace CraftSystem
         {
             Console.Title = "Awesome Crafting System";
             Console.WriteLine("Welcome to the Awesome Crafting System!");
-            player.PrintStatus();  // Print player's name and currency
-            InitializeRecipes();   // Initialize recipes
+            player.PrintStatus(); 
+            InitializeRecipes();   
             ShowAllRecipes();
             SelectRecipeDetails();
-            DisplayCredits();  // Display credits at the end
+            DisplayCredits();
             Console.ReadKey();
         }
 
