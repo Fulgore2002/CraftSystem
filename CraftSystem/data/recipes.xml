@@ -1,0 +1,18 @@
+<recipes>
+	<recipe name="Chamomile Tea" amount ="1" yieldAmount="1" amountType = "cup" value = "1.05" description = "Great tea for relaxing times">
+		<ingredient name = "Water" description = "Filtered water" value = ".0015" amount = "1" amountType = "cup">
+		</ingredient>
+			<ingredient name = "Chamomile" description = "Matricaria recutita, dried" value = "0.0875" amount = "1" amountType = "tsp">
+		</ingredient>
+	</recipe>
+		<recipe name="Sleeping Potion" amount ="1" yieldAmount="1" amountType = "cup" value = "1.05" description = "Great tea for relaxing times">
+		<ingredient name = "Chamomile Tea" description = "Matricaria recutita, dried" value = "0.0875" amount = "1" amountType = "cup">
+		</ingredient>
+			<ingredient name = "Ashwagandha" description = "Withania somnifera, extract" value = ".37375" amount = ".5" amountType = "tsp">
+		</ingredient>
+		<ingredient name = "Dried Lavender" description = "Lavandula angustifolia, dried" value = "16.25" amount = ".5" amountType = "tsp">
+		</ingredient>
+		<ingredient name = "Lemon Balm" description = "Melissa officinalis, dried" value = ".436875" amount = ".5" amountType = "tsp">
+		</ingredient>
+	</recipe>
+</recipes>

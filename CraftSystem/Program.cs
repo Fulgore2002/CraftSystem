@@ -13,7 +13,6 @@ namespace CraftSystem
     {
         static void Main()
         {
-            Person player = new Person("Anonymous Player");
 
             Engine engine = new Engine(player);
             engine.Start();  

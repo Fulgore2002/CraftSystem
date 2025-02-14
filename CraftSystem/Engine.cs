@@ -23,7 +23,6 @@ namespace CraftSystem
             InitializeRecipes();   
             ShowAllRecipes();
             SelectRecipeDetails();
-            DisplayCredits();
             Console.ReadKey();
         }
 
@@ -78,12 +77,6 @@ namespace CraftSystem
             }
         }
 
-        // Method to display credits at the end
-        private void DisplayCredits()
-        {
-            Menu menu = new Menu();
-            menu.DisplayCredits();
-        }
     }
 
 }
