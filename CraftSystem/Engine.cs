@@ -1,82 +1,141 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
+using System.Text;
+using System.Threading.Tasks;
 using static System.Console;
+using static CraftSystem.Library;
 
 namespace CraftSystem
 {
     public class Engine
     {
-        private Person player;
-        private List<Recipe> recipes = new List<Recipe>();
-
-        public Engine(Person player)
-        {
-            this.player = player;
-        }
+        Person Player = new Person();
+        Person Vendor = new Person();
+        public List<Recipe> Recipes = new List<Recipe>();
+        private string applicationTitle = "Awesome Potion Crafting System";
 
         public void Start()
         {
-            Console.Title = "Awesome Crafting System";
-            Console.WriteLine("Welcome to the Awesome Crafting System!");
-            player.PrintStatus(); 
-            InitializeRecipes();   
-            ShowAllRecipes();
-            SelectRecipeDetails();
-            Console.ReadKey();
-        }
+            SetApplicationTitle(applicationTitle);
+            Console.WriteLine(applicationTitle);
 
-        // Method to initialize recipes
-        private void InitializeRecipes()
-        {
-            Recipe hotChocolate = new Recipe("Hot Chocolate", "12 ounces", 3.50);
-            hotChocolate.AddIngredient("Milk", "4 cups");
-            hotChocolate.AddIngredient("Chocolate Chips", "1/2 cup");
-            recipes.Add(hotChocolate);
+            Console.WriteLine(Player.Information());
 
-            Recipe applePie = new Recipe("Apple Pie", "1 pie", 10.00);
-            applePie.AddIngredient("Apples", "6 cups");
-            applePie.AddIngredient("Sugar", "2 cups");
-            recipes.Add(applePie);
+            Console.WriteLine("Do you want to customize your name? Type y for yes, n for no:");
+            string input = Library.GetInput();
 
-            Recipe bread = new Recipe("Bread", "1 loaf", 5.00);
-            bread.AddIngredient("Flour", "4 cups");
-            bread.AddIngredient("Yeast", "1 tablespoon");
-            recipes.Add(bread);
-        }
-
-        private void ShowAllRecipes()
-        {
-            Console.WriteLine("\nAvailable Recipes:");
-            foreach (var recipe in recipes)
+            if (input.ToLower() == "y")
             {
-                Console.WriteLine($"- {recipe.GetName()}");
+                Console.WriteLine("Please enter your name:");
+                Player.Name = Library.GetInput();
+            }
+
+            Recipes = Library.LoadRecipeFromXMLFile("../../../data/recipes.xml");
+            Recipes.Add(new Recipe { Name = "recipe 2" });
+
+            Run();
+        }
+
+        private void Run()
+        {
+            Console.WriteLine();
+            Console.WriteLine(Player.Information());
+            Console.WriteLine(ShowMenu());
+
+            int number = Library.ConvertStringToInteger(Library.GetInput());
+
+            if (number > 0)
+            {
+                switch (number)
+                {
+                    case 1:
+                        Console.WriteLine(Player.ShowInventoryItems());
+                        break;
+                    case 2:
+                        Console.WriteLine(ShowAllRecipes());
+                        break;
+                    case 3:
+                        RecipeMenu();
+                        break;
+                    case 4:
+                        CraftRecipe();
+                        break;
+                    case 5:
+                        return;
+                }
+            }
+
+            Run();
+        }
+
+        private string ShowMenu()
+        {
+            string output = "Choose an option:";
+            output += "\n1. Show inventory";
+            output += "\n2. Show recipes";
+            output += "\n3. See recipe details";
+            output += "\n4. Craft";
+            output += "\n5. Exit";
+
+            return output;
+        }
+
+        public string ShowAllRecipes()
+        {
+            StringBuilder output = new StringBuilder("Available Recipes:\n");
+            int number = 1;
+
+            foreach (Recipe recipe in Recipes)
+            {
+                output.AppendLine($"   {number}. {recipe.Information()}");
+                number++;
+            }
+
+            return output.ToString();
+        }
+
+        public void RecipeMenu()
+        {
+            Console.WriteLine(ShowAllRecipes());
+            Console.WriteLine("Enter the number of the recipe you would like to view:");
+            string choice = Library.GetInput();
+            int num = Library.ConvertStringToInteger(choice);
+
+            if (num >= 1 && num <= Recipes.Count)
+            {
+                Console.WriteLine(Recipes[num - 1].Information());
+            }
+            else
+            {
+                Console.WriteLine("Invalid number. Please try again.");
+                RecipeMenu();
             }
         }
 
-        private void SelectRecipeDetails()
+        private void CraftRecipe()
         {
-            Console.WriteLine("\nEnter the name of the recipe you want to see details for:");
-            string recipeName = Console.ReadLine();
-            Recipe selectedRecipe = recipes.FirstOrDefault(r => r.GetName().Equals(recipeName, StringComparison.OrdinalIgnoreCase));
+            Console.WriteLine(ShowAllRecipes());
+            Console.WriteLine("Enter the number of the recipe you want to craft:");
+            string choice = Library.GetInput();
+            int num = Library.ConvertStringToInteger(choice);
 
-            if (selectedRecipe != null)
+            if (num >= 1 && num <= Recipes.Count)
             {
-                Console.WriteLine($"\nRecipe: {selectedRecipe.GetName()}");
-                Console.WriteLine($"Amount: {selectedRecipe.GetOutputAmount()}");
-                Console.WriteLine($"Value: {selectedRecipe.GetValue():C}");
-                Console.WriteLine("Ingredients:");
-                foreach (var ingredient in selectedRecipe.GetIngredients())
+                Recipe recipeToCraft = Recipes[num - 1];
+                Item craftedItem = Player.CraftItem(recipeToCraft);
+
+                if (craftedItem != null)
                 {
-                    Console.WriteLine($"- {ingredient.Key}: {ingredient.Value}");
+                    Console.WriteLine($"{craftedItem.Name} has been crafted and added to your inventory!");
                 }
             }
             else
             {
-                Console.WriteLine("Recipe not found.");
+                Console.WriteLine("Invalid number. Please try again.");
+                CraftRecipe();
             }
         }
-
     }
-
 }

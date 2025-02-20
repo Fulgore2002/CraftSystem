@@ -1,33 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Xml;
 
 namespace CraftSystem
 {
-    public class Library
+    public static class Library
     {
-
-        public static void Pause()
+        public static void SetApplicationTitle(string message)
         {
-            Print("Press enter to continue...");
-            GetInput();
-            Console.Clear();
-        }
-        public static void Print(string message)
-        {
-            Console.WriteLine(message);
+            Console.Title = message;
         }
 
-        public static void Print()
+        public static string LoadContentFromTextFile(string path)
         {
-            Print("");
+            if (File.Exists(path))
+            {
+                return File.ReadAllText(path);
+            }
+            return "Data not found";
         }
 
-        public static string GetInput()
+        public static List<Recipe> LoadRecipeFromXMLFile(string path)
         {
-            return Console.ReadLine();
+            List<Recipe> recipes = new List<Recipe>();
+            if (File.Exists(path))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(path);
+                XmlNode root = doc.DocumentElement;
+                XmlNodeList recipeList = root.SelectNodes("/recipes/recipe");
+
+                foreach (XmlElement recipe in recipeList)
+                {
+                    Recipe recipeToAdd = new Recipe
+                    {
+                        Name = recipe.GetAttribute("name"),
+                        Description = recipe.GetAttribute("description"),
+                        yieldAmount = recipe.GetAttribute("yieldAmount"),
+                        yieldType = recipe.GetAttribute("yieldType")
+                    };
+
+                    if (double.TryParse(recipe.GetAttribute("value"), out double value))
+                    {
+                        recipeToAdd.Value = value;
+                    }
+
+                    XmlNodeList ingredientsList = recipe.ChildNodes;
+                    foreach (XmlElement i in ingredientsList)
+                    {
+                        Item ingredient = new Item
+                        {
+                            Name = i.GetAttribute("name"),
+                            AmountType = i.GetAttribute("amountType")
+                        };
+
+                        if (double.TryParse(i.GetAttribute("amount"), out double amount))
+                        {
+                            ingredient.Amount = amount;
+                        }
+
+                        if (double.TryParse(i.GetAttribute("value"), out double ingValue))
+                        {
+                            ingredient.Value = ingValue;
+                        }
+
+                        recipeToAdd.Ingredients.Add(ingredient);
+                    }
+                    recipes.Add(recipeToAdd);
+                }
+            }
+            return recipes;
         }
 
         public static int ConvertStringToInteger(string s)
@@ -36,27 +79,30 @@ namespace CraftSystem
             {
                 return result;
             }
-
             return 0;
         }
-        public static float ConvertStringToFloat(string s)
-        {
-            if (float.TryParse(s, out float result))
-            {
-                return result;
-            }
 
-            return 0;
+        public static string GetInput()
+        {
+            return Console.ReadLine();
         }
-        public static double ConvertStringToDouble(string s)
-        {
-            if (double.TryParse(s, out double result))
-            {
-                return result;
-            }
 
-            return 0;
+        public static double ConvertToTeaspoons(double amount, string unit)
+        {
+            switch (unit.ToLower())
+            {
+                case "tablespoon":
+                case "tablespoons":
+                    return amount * 3;
+                case "cup":
+                case "cups":
+                    return amount * 48;
+                case "pint":
+                case "pints":
+                    return amount * 96;
+                default:
+                    return amount;
+            }
         }
     }
 }
-

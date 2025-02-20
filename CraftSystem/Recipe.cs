@@ -4,62 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CraftSystem
 {
+
     public class Recipe
     {
-        public string Name { get; set; }
-        public string OutputAmount { get; set; }
-        public double Value { get; set; }
-        public Dictionary<string, string> Ingredients { get; set; }
+        public string Name;
+        public string Description;
+        public double Value;
+        public double Amount;
+        public string AmountType;
+        public string yieldAmount;
+        public string yieldType;
+        public List<Item> Ingredients = new List<Item>();
 
-        public Recipe(string name, string outputAmount, double value)
+        public Recipe() { }
+
+        public Recipe(string name, string description, List<Item> items)
         {
             Name = name;
-            OutputAmount = outputAmount;
-            Value = value;
-            Ingredients = new Dictionary<string, string>();
+            Description = description;
+            Ingredients = items;
         }
 
-        // Method to add an ingredient and its amount
-        public void AddIngredient(string item, string amount)
+        public string Information()
         {
-            Ingredients[item] = amount;
-        }
-
-        public string GetName()
-        {
-            return Name;
-        }
-
-        public string GetOutputAmount()
-        {
-            return OutputAmount;
-        }
-
-        public double GetValue()
-        {
-            return Value;
-        }
-
-        public Dictionary<string, string> GetIngredients()
-        {
-            return Ingredients;
-        }
-
-        // Method to get the recipe details
-        public string GetDetails()
-        {
-            var details = new StringBuilder();
-            details.AppendLine($"Recipe: {Name}");
-            details.AppendLine($"Amount: {OutputAmount}");
-            details.AppendLine($"Value: {Value:C}");
-            details.AppendLine("Ingredients:");
-            foreach (var ingredient in Ingredients)
-            {
-                details.AppendLine($"- {ingredient.Key}: {ingredient.Value}");
-            }
-            return details.ToString();
+            return $"    *{Name} ({Description})";
         }
     }
 

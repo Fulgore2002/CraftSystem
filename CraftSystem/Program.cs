@@ -6,17 +6,15 @@
 * - some help from my brother
  */
 
-
 namespace CraftSystem
 {
     internal class Program
     {
         static void Main()
         {
+            Engine e = new Engine();
+            e.Start();
 
-            Engine engine = new Engine(player);
-            engine.Start();  
         }
     }
-
 }
